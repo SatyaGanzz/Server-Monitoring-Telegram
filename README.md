@@ -10,17 +10,20 @@ Bot Telegram untuk monitoring dan manage Armbian B860H home server.
 
 ## Cara Install di Server
 
-### 1. Copy file ke server
+### Prasyarat
+Pastikan server Anda sudah terinstall **Node.js (versi >= 18)**, **npm**, dan **git**.
+
+### 1. Clone dari GitHub ke Server
 
 ```bash
-# Dari komputer lokal, SCP ke server
-scp -r . root@<IP_SERVER>:/opt/tele-notify-bot/
+cd /opt
+git clone https://github.com/SatyaGanzz/Server-Monitoring-Telegram.git tele-notify-bot
+cd tele-notify-bot
 ```
 
 ### 2. Install dependencies
 
 ```bash
-cd /opt/tele-notify-bot
 npm install --production
 ```
 
