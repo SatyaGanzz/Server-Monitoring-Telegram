@@ -14,6 +14,8 @@ const { sendMonitoring } = require('./modules/monitoring');
 // ============================================
 // Inisialisasi Bot (Long Polling — ringan)
 // ============================================
+process.env.NTBA_FIX_350 = '1';
+
 const bot = new TelegramBot(config.botToken, {
   polling: {
     interval: 2000,       // Poll setiap 2 detik (hemat resource)
@@ -22,6 +24,11 @@ const bot = new TelegramBot(config.botToken, {
       timeout: 30,        // Long polling timeout 30 detik
     },
   },
+  request: {
+    agentOptions: {
+      family: 4 // Force IPv4 untuk mencegah AggregateError di Node 18+ (karena STB sering tidak support IPv6 penuh)
+    }
+  }
 });
 
 console.log('');
