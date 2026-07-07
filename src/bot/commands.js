@@ -44,7 +44,14 @@ function registerCommands(bot) {
       `*Monitoring otomatis:*\n` +
       `Bot akan mengirim laporan sistem setiap 10 menit secara otomatis\\.`;
 
-    bot.sendMessage(msg.chat.id, help, { parse_mode: 'MarkdownV2' });
+    bot.sendMessage(msg.chat.id, help, {
+      parse_mode: 'MarkdownV2',
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: '🔄 Update Bot (Tarik dari GitHub)', callback_data: 'help:updatebot' }]
+        ]
+      }
+    });
   });
 
   // /status — manual trigger monitoring

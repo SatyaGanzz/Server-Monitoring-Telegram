@@ -210,6 +210,27 @@ function registerCallbacks(bot) {
         await bot.sendMessage(chatId, msg, { parse_mode: 'MarkdownV2' });
       }
 
+      else if (data === 'adm:speedtest') {
+        await bot.answerCallbackQuery(query.id, { text: '🚀 Menjalankan Speedtest (butuh 30-60 detik)...' });
+        // Send a temporary message because speedtest takes long
+        const tempMsg = await bot.sendMessage(chatId, '🚀 *Speedtest sedang berjalan...*\n_Mohon tunggu sekitar 30-60 detik._', { parse_mode: 'MarkdownV2' });
+        const result = await admin.checkSpeedtest();
+        const msg =
+          `🚀 *Speedtest Result — ${escMd(config.hostname)}*\n` +
+          `━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+          `\`\`\`\n${escMd(result)}\n\`\`\``;
+        await bot.deleteMessage(chatId, tempMsg.message_id);
+        await bot.sendMessage(chatId, msg, { parse_mode: 'MarkdownV2' });
+      }
+
+      else if (data === 'help:updatebot') {
+        await bot.answerCallbackQuery(query.id, { text: '🔄 Mengupdate bot...' });
+        await bot.sendMessage(chatId, '🔄 *Menarik update dari GitHub...*\n_Bot akan otomatis direstart oleh systemd setelah selesai._', { parse_mode: 'MarkdownV2' });
+        // Run git pull and restart via systemd
+        const { exec } = require('child_process');
+        exec('git pull && sudo systemctl restart tele-bot', { timeout: 10000 });
+      }
+
       else if (data === 'adm:back') {
         await bot.answerCallbackQuery(query.id);
         await bot.deleteMessage(chatId, messageId);

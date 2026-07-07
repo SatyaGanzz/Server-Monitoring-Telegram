@@ -29,6 +29,7 @@ async function handleAdminCommand(bot, chatId, hostname) {
     [{ text: '🐳 Restart All Docker', callback_data: 'adm:docker_restart' }],
     [{ text: '🔗 Tailscale Status', callback_data: 'adm:tailscale' }],
     [{ text: '☁️ Cloudflared Status', callback_data: 'adm:cloudflared' }],
+    [{ text: '🚀 Speedtest', callback_data: 'adm:speedtest' }],
     [{ text: '❌ Close', callback_data: 'adm:close' }],
   ];
 
@@ -88,6 +89,16 @@ async function checkCloudflared() {
   return `🔴 *Cloudflared:* Inactive`;
 }
 
+/**
+ * Cek Speedtest
+ */
+async function checkSpeedtest() {
+  // Using simple speedtest.py script for lightweight execution
+  const result = await run('curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 - --simple');
+  if (!result.ok || !result.output) return "❌ Gagal menjalankan speedtest. Pastikan curl & python3 terinstall.";
+  return result.output;
+}
+
 module.exports = {
   handleAdminCommand,
   rebootDevice,
@@ -95,4 +106,5 @@ module.exports = {
   checkRam,
   checkTailscale,
   checkCloudflared,
+  checkSpeedtest,
 };
