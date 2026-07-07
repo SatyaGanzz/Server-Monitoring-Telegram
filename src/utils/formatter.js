@@ -37,9 +37,9 @@ function formatMonitoring({ hostname, uptime, cpu, cpuTemp, memory, storage, net
   msg += `\n`;
 
   // Network
-  msg += `🌐 *Network*\n`;
-  msg += `├─ ⬆️ Upload: ${escMd(network.upload)}\n`;
-  msg += `├─ ⬇️ Download: ${escMd(network.download)}\n`;
+  msg += `🌐 *Network \\(Total Akumulasi\\)*\n`;
+  msg += `├─ ⬆️ Total Upload: ${escMd(network.upload)}\n`;
+  msg += `├─ ⬇️ Total Download: ${escMd(network.download)}\n`;
   msg += `└─ 🔗 IP: \`${escMd(ip)}\`\n\n`;
 
   // Docker
