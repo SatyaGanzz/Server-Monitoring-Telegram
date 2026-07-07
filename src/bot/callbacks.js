@@ -225,10 +225,22 @@ function registerCallbacks(bot) {
 
       else if (data === 'help:updatebot') {
         await bot.answerCallbackQuery(query.id, { text: '🔄 Mengupdate bot...' });
-        await bot.sendMessage(chatId, '🔄 *Menarik update dari GitHub...*\n_Bot akan otomatis direstart oleh systemd setelah selesai._', { parse_mode: 'MarkdownV2' });
-        // Run git pull and restart via systemd
+        await bot.sendMessage(chatId, '🔄 *Menarik update dari GitHub...*', { parse_mode: 'MarkdownV2' });
+        
         const { exec } = require('child_process');
-        exec('git pull && sudo systemctl restart tele-bot', { timeout: 10000 });
+        exec('git pull', async (error, stdout, stderr) => {
+          if (error) {
+            await bot.sendMessage(chatId, `❌ *Gagal mengupdate bot:*\n\`\`\`\n${escMd(error.message)}\n\`\`\``, { parse_mode: 'MarkdownV2' });
+          } else {
+            const resultText = stdout.trim() || stderr.trim();
+            await bot.sendMessage(chatId, `✅ *Update berhasil ditarik:*\n\`\`\`\n${escMd(resultText)}\n\`\`\`\n\n_Restarting bot dalam 2 detik..._`, { parse_mode: 'MarkdownV2' });
+            
+            // Tunggu pesan terkirim, lalu restart bot
+            setTimeout(() => {
+              exec('sudo systemctl restart tele-bot');
+            }, 2000);
+          }
+        });
       }
 
       else if (data === 'adm:back') {
