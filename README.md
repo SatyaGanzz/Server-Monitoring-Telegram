@@ -21,13 +21,9 @@ git clone https://github.com/SatyaGanzz/Server-Monitoring-Telegram.git tele-noti
 cd tele-notify-bot
 ```
 
-### 2. Install dependencies
+### 2. Setup Lingkungan (Tanpa npm install!)
 
-```bash
-npm install --production
-```
-
-### 3. Setup .env
+Karena aplikasi ini sudah di-compile menjadi satu file (bundled), Anda **TIDAK PERLU** menjalankan `npm install`. Sangat ringan untuk STB Armbian!
 
 ```bash
 cp .env.example .env
@@ -36,15 +32,15 @@ nano .env
 
 Isi `BOT_TOKEN` dan `CHAT_ID` Anda.
 
-### 4. Test jalankan manual
+### 3. Test jalankan manual
 
 ```bash
-node src/index.js
+node dist/index.js
 ```
 
 Jika berhasil, Anda akan menerima pesan monitoring di Telegram.
 
-### 5. Install sebagai systemd service (auto-start)
+### 4. Install sebagai systemd service (auto-start)
 
 ```bash
 sudo cp tele-bot.service /etc/systemd/system/
