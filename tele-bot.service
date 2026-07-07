@@ -1,0 +1,27 @@
+[Unit]
+Description=Telegram Bot - Home Server Control Panel
+After=network.target docker.service
+Wants=docker.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/tele-notify-bot
+ExecStart=/usr/bin/node src/index.js
+Restart=always
+RestartSec=10
+
+# Batas RAM supaya tidak crash server
+MemoryMax=100M
+MemoryHigh=80M
+
+# Environment
+Environment=NODE_ENV=production
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=tele-bot
+
+[Install]
+WantedBy=multi-user.target
